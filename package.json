@@ -1,0 +1,28 @@
+{
+  "name": "exercises",
+  "version": "1.0.0",
+  "description": "this is a coding train exercise on node server",
+  "keywords": [
+    "exercise",
+    "node"
+  ],
+  "license": "MIT",
+  "author": "Francisco Ramos",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@editorjs/editorjs": "^2.31.3",
+    "cloudinary": "^2.9.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongodb": "^7.0.0",
+    "multer": "^2.0.2",
+    "p5": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/p5": "^1.7.7"
+  }
+}
