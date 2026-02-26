@@ -11,6 +11,16 @@ export default class {
     async getHTML() {
         return '';
     }
+
+    setController(controller) {
+
+        this.controller = controller;
+    }
+
+    getController() {
+
+        return this.controller;
+    }
     
 }
 

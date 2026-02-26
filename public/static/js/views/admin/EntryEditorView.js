@@ -13,7 +13,7 @@ export default class EntryEditorView extends AbstractView {
 
             <h1>Entry Editor</h1>
             <div id="editorjs"></div>
-            <button id="submit-entry-button">submit</button>
+            <button [] id="submit-entry-button">submit</button>
         `
     }
 
@@ -26,7 +26,7 @@ export default class EntryEditorView extends AbstractView {
                     class: ImageTool,   // comes from the CDN
                     config: {
                         endpoints: {
-                        byFile: '/uploadImage', // your backend endpoint
+                        byFile: '/api/upload-image', // your backend endpoint
                         byUrl: '/fetchUrl'     // optional
                         }
                     }
@@ -35,9 +35,9 @@ export default class EntryEditorView extends AbstractView {
         })
 
         const submitButton = document.getElementById("submit-entry-button");
-        submitButton.addEventListener("click(", (e) => {
+        submitButton.addEventListener("click", async (e) => {
             e.preventDefault();
-            console.log("testing submit"); // then relplacing this log with the controller function
+            this.controller.saveEntry(await this.editor.save());
         })    
     }
 }

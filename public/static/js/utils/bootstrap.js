@@ -20,30 +20,36 @@ const init = function() { // this might hahve to be asynchronous
     const adminLoginController = new AdminLoginController();
     const adminLoginView = new AdminLoginView();
     adminLoginController.setView(adminLoginView);
+    adminLoginView.setController(adminLoginController);
     // home dependencies
     const adminHomeController = new AdminHomeController();
     const adminHomeView = new AdminHomeView();
     adminHomeController.setView(adminHomeView);
+    adminHomeView.setController(adminHomeController);
     // editor dependencies
     const editorController = new EntryEditorController();
     const editorView = new EntryEditorView();
     editorController.setView(editorView);
+    editorView.setController(editorController);
 
     //user
     // home dependencies
     const homeController = new HomeController();
     const homeView = new HomeView();
     homeController.setView(homeView);
+    homeView.setController(homeController);
 
     // posts dependencies
     const postsController = new PostsController();
     const postsView = new PostsView();
     postsController.setView(postsView);
+    postsView.setController(postsController);
 
     // projects dependencies
     const projectsController = new ProjectsController();
     const projectsView = new ProjectsView();
     projectsController.setView(projectsView);
+    projectsView.setController(projectsController);
 
 
     return {

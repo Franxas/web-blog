@@ -74,7 +74,7 @@ run();
 
 // CRUD Operations
 
- app.post('/uploadImage', upload.single('image'), async (request, response) => {
+app.post('/api/upload-image', upload.single('image'), async (request, response) => {
 
     const data = await request.file;
     if(!request.file) {
@@ -96,4 +96,12 @@ run();
     ).end(request.file.buffer);
 
 
+})
+
+app.post('/api/save-entry', (req, res) => {
+    console.log('got a request to sabe Data');
+    console.log(req.body);
+    res.json({
+        success: true
+    });
 })
