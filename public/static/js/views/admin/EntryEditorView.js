@@ -10,9 +10,11 @@ export default class EntryEditorView extends AbstractView {
     async getHTML() {
 
         return `
-
             <h1>Entry Editor</h1>
+            <label for="title">Title:</label>
+            <input type="text" id="entry-title" name="title">
             <div id="editorjs"></div>
+            <>
             <button [] id="submit-entry-button">submit</button>
         `
     }
@@ -27,7 +29,7 @@ export default class EntryEditorView extends AbstractView {
                     config: {
                         endpoints: {
                         byFile: '/api/upload-image', // your backend endpoint
-                        byUrl: '/fetchUrl'     // optional
+                        byUrl: '/fetchUrl' // optional
                         }
                     }
                 }
@@ -35,9 +37,20 @@ export default class EntryEditorView extends AbstractView {
         })
 
         const submitButton = document.getElementById("submit-entry-button");
+        const titleInput = document.getElementById("entry-title");
         submitButton.addEventListener("click", async (e) => {
             e.preventDefault();
-            this.controller.saveEntry(await this.editor.save());
+            const title = titleInput.value;
+            console.log('testing title input value');
+            console.log(title);
+            this.controller.saveEntry(title, await this.editor.save());
         })    
+    }
+
+    previewEntry(entry) {
+
+
+        
+
     }
 }
