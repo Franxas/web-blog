@@ -5,3 +5,5 @@ Entry Editor:
 
 Posts user view
 -> populate it with list of entries. just like in the admin view. 
+
+-> nas view algumas funções são iguais. pouco reaproveitamento do codigo. talvez arrumar um pouco

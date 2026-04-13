@@ -15,7 +15,6 @@ export default class EntryEditorController extends AbstractController {
     }
 
     async showView(entry) {
-        console.log('testing preview');
         console.log(entry);
         document.querySelector('#app').innerHTML = await this.view.getHTML();
         await this.view.previewEntry(entry);

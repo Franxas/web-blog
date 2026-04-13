@@ -10,11 +10,30 @@ export default class extends AbstractView {
     async getHTML() {
 
         await this.highlightAnchor();
-        await this.shuffleH1();
         return `
-            <h1>posts</h1>
-            <ul id="posts-list"></ul>
+            <div id="entries-header" style="display: flex; margin-top: 10px">
+                <p style="margin: 0px"><i>Entries</i></p>        
+            </div>
+            <ul id="entries-list" style="list-style-type: none; padding-left: 0;"></ul>
         `;
+    }
+
+    async listEntries(entries) {
+
+        const entryList = document.getElementById("entries-list");
+        
+        for (let e of entries.reverse()) {
+            const listElem = document.createElement("li");
+            const a = document.createElement("a");
+            a.textContent = e.date.split("T")[0] + " " + e.title;
+            a.href = e._id;
+            a.addEventListener("click", async event => {
+                event.preventDefault();
+                await this.controller.showPreviewView(e);
+            });
+            listElem.appendChild(a);
+            entryList.appendChild(listElem);
+        }
     }
 
     async highlightAnchor() {
@@ -29,25 +48,5 @@ export default class extends AbstractView {
         const homeAnch = document.getElementById("posts-anchor");
         homeAnch.style.color = "white";
         homeAnch.style.backgroundColor = "black";
-    }
-
-    async shuffleH1() {
-
-        const header = document.getElementById("franzacom");
-        let franText = "franzaCom";
-        let franArray = franText.split("");
-        
-        franArray = franArray
-            .map(value => ({ value, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ value }) => value);
-        
-        franText = "";
-        for (let e of franArray) {
-            franText += e;
-        }
-        header.textContent = franText;
-        header.textContent = franText;
-        header.style.letterSpacing = (Math.random() * 4) + "vw";
     }
 }

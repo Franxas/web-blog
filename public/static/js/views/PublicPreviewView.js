@@ -1,4 +1,4 @@
-import AbstractView from "../AbstractView.js";
+import AbstractView from "./AbstractView.js";
 
 export default class extends AbstractView {
 
@@ -13,9 +13,6 @@ export default class extends AbstractView {
             <div id="preview">
             </div>
             <div id="options" style="margin-bottom: 50px">
-                <a id="edit-anch" href="/admin/editor">edit</a>
-                <a href="/">delete</a>
-                <a href="/admin/home" data-link>manage</a>
             </div>
         `
     }
@@ -23,15 +20,17 @@ export default class extends AbstractView {
     async previewEntry(entry) {
 
         const previewDiv = document.getElementById("preview");
-        const entryTitle = document.createElement("h1");
+        const entryTitle = document.createElement("p");
         entryTitle.textContent = entry.title;
+        entryTitle.style.fontStyle = "italic";
         previewDiv.appendChild(entryTitle);
 
         for (const block of entry.blocks) {
 
             if (block.type === "header") {
-                const b =  document.createElement(`h${block.data.level}`);
+                const b =  document.createElement("p");
                 b.textContent = block.data.text;
+                b.style.fontStyle = "italic";
                 previewDiv.appendChild(b);
             } else if (block.type === "paragraph") {
                 const b =  document.createElement("p");
@@ -44,13 +43,5 @@ export default class extends AbstractView {
                 // still deciding on ig I want to be able to add a caption to the images
             }
         }
-
-        // assign this entry to the edit anchor event callback function
-        const editAnch = document.getElementById("edit-anch");
-        editAnch.addEventListener("click", (e) => {
-
-            e.preventDefault();
-            this.controller.getEditorController().showView(entry);
-        })
     }
 }

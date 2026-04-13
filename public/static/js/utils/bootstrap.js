@@ -4,6 +4,7 @@ import PostsController from "../controllers/PostsController.js";
 import PostsView from "../views/PostsView.js";
 import ProjectsController from "../controllers/ProjectsController.js";
 import ProjectsView from "../views/ProjectsView.js";
+import PublicPreviewView from "../views/PublicPreviewView.js";
 // admin
 import AdminLoginView from "../views/admin/AdminLoginView.js";
 import AdminLoginController from "../controllers/admin/AdminLoginController.js";
@@ -55,8 +56,10 @@ const init = function() { // this might hahve to be asynchronous
     // posts dependencies
     const postsController = new PostsController();
     const postsView = new PostsView();
+    const publicPreviewView = new PublicPreviewView();
     postsController.setView(postsView);
     postsView.setController(postsController);
+    postsController.setPreviewView(publicPreviewView);
 
     // projects dependencies
     const projectsController = new ProjectsController();

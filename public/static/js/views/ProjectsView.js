@@ -10,7 +10,6 @@ export default class extends AbstractView {
     async getHTML() {
 
         await this.highlightAnchor();
-        await this.shuffleH1();
         return `
             <h1>Projects</h1>
             <ul id="projects-list"></ul>
@@ -31,23 +30,27 @@ export default class extends AbstractView {
         homeAnch.style.backgroundColor = "black";
     }
 
-    async shuffleH1() {
+/*     async posH1() {
 
         const header = document.getElementById("franzacom");
         let franText = "franzaCom";
-        let franArray = franText.split("");
-        
-        franArray = franArray
-            .map(value => ({ value, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ value }) => value);
-        
-        franText = "";
-        for (let e of franArray) {
-            franText += e;
+        let franArray = franText.split("");        
+        header.textContent = "";
+
+        let xOffset = 0;
+        let yOffset = -30;
+        let xOffRdm = Math.random() * 60;
+
+        for (let i = 0; i < franArray.length; i++) {
+
+            const span = document.createElement("span");
+            span.textContent = franArray[i];
+
+            const drop = Math.random() * 90 + 20; // random "drop" distance
+            span.style.transform = `translate(${xOffset}px, ${yOffset}px)`;        
+            header.appendChild(span);
+            xOffset += xOffRdm;
+            yOffset += drop;
         }
-        header.textContent = franText;
-        header.textContent = franText;
-        header.style.letterSpacing = (Math.random() * 4) + "vw";
-    }
+    }; */
 }
