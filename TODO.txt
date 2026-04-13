@@ -1,0 +1,7 @@
+TODO:
+
+Entry Editor:
+-> add a button to go back / cancel editing and discard changes. this should take you back to entries list
+
+Posts user view
+-> populate it with list of entries. just like in the admin view. 

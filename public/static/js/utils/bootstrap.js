@@ -11,6 +11,8 @@ import AdminHomeView from "../views/admin/AdminHomeView.js";
 import AdminHomeController from "../controllers/admin/AdminHomeController.js";
 import EntryEditorView from "../views/admin/EntryEditorView.js";
 import EntryEditorController from "../controllers/admin/EntryEditorController.js";
+import EntryPreviewView from "../views/admin/EntryPreviewView.js";
+import EntryPreviewController from "../controllers/admin/EntryPreviewController.js";
 
 
 const init = function() { // this might hahve to be asynchronous
@@ -21,16 +23,27 @@ const init = function() { // this might hahve to be asynchronous
     const adminLoginView = new AdminLoginView();
     adminLoginController.setView(adminLoginView);
     adminLoginView.setController(adminLoginController);
+
+    // Entry Preview and Preview dependencies
+    const entryPreviewController = new EntryPreviewController();
+    const entryPreviewView = new EntryPreviewView();
+    const editorController = new EntryEditorController();
+    const editorView = new EntryEditorView();
+
+    entryPreviewController.setView(entryPreviewView);
+    entryPreviewView.setController(entryPreviewController);
+
+    editorController.setView(editorView);
+    editorView.setController(editorController);
+    editorController.setPreviewController(entryPreviewController);
+    entryPreviewController.setEditorController(editorController);
+
     // home dependencies
     const adminHomeController = new AdminHomeController();
     const adminHomeView = new AdminHomeView();
     adminHomeController.setView(adminHomeView);
     adminHomeView.setController(adminHomeController);
-    // editor dependencies
-    const editorController = new EntryEditorController();
-    const editorView = new EntryEditorView();
-    editorController.setView(editorView);
-    editorView.setController(editorController);
+    adminHomeController.setPreviewController(entryPreviewController);
 
     //user
     // home dependencies

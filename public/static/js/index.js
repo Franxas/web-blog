@@ -12,16 +12,8 @@ const router = async () => {
     ];
 
     const match = routes.find(route => route.path === location.pathname) || routes[0]; //location.pathname meaning the path portion of the current url
-    console.log('test match');
-    console.log(match);
     const controller = match.controller;
     await controller.showView();
-    
-    try { //this so that the editor runs when needed with no errors when not
-        controller.getView().loadEditor();
-    } catch (error) {
-        console.log("no editor test");
-    }
 } 
 
 const navigate = function(url) {
@@ -39,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             navigate(e.target.href);
         }
     })
+
+    window.addEventListener('popstate', router);
 
     router();
 })

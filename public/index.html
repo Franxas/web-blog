@@ -4,20 +4,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPA</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+    <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
 
-    <nav clas="nav">
-      <a class="nav-link" href="/" data-link>home</a>
-      <a class="nav-link" href="/posts" data-link>posts</a>
-      <a class="nav-link" href="/projects" data-link>projects</a>
+    <nav id="nav" class="nav">
+      <a id="home-anchor" class="nav-link" href="/" data-link>home</a>
+      <a id="posts-anchor" class="nav-link" href="/posts" data-link style="margin-left: 10px">posts</a>
+      <a id="projs-anchor" class="nav-link" href="/projects" data-link style="margin-left: 10px">projects</a>
+      <h1 id="franzacom" 
+          style="margin-top: 0px; 
+                margin-bottom: 
+                0px; margin-left: 50px;
+                letter-spacing: 2vw;" 
+          title="franzaCom">franzaCom
+      </h1>
     </nav>
+    
     <div id="app"></div>
+    
 
     <script type="module" src="/static/js/index.js"></script>    
   </body>

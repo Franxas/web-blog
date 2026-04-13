@@ -35,23 +35,25 @@ router.post('/save-entry', async (req, res) => {
 
     const entryData = req.body;
     console.log('got a request to save Data');
-
-    //creating a new Entry according to defined schema
-    const entry = new Entry( {
-    title: entryData.title,
-    date: Date.now(),
-    blocks: entryData.blocks
-    })
-
-    //saving entry in db and respose to client accordingly to success
+    console.log(entryData);
+    let entry;
     try {
-        await entry.save();
+        if (!entryData._id) {
+            //creating a new Entry according to defined schema
+            entry = await Entry.create({
+                title: entryData.title,
+                date: Date.now(),
+                blocks: entryData.blocks
+            });
+        } else {
+            //updating entrie and sending res to client
+            entry = await Entry.findByIdAndUpdate(entryData._id, entryData);
+        }
         res.json({
             "success": true,
             "data": req.body,
             "message": "post saved successfully"
         });
-        console.log(entry);
 
     } catch(error) {
         console.log(error);
@@ -60,6 +62,32 @@ router.post('/save-entry', async (req, res) => {
             "data": req.body,
             "message": "post could not be saved"
         });
+    }
+    console.log(entry);
+})
+
+
+
+
+
+router.get('/entries', async (req, res) => {
+
+    console.log('received a request to get all entries');
+    const entries = await Entry.find({});
+    console.log(entries);
+
+    try {
+        res.json({
+            "success": true,
+            "data":  entries,
+            "message": "got all entries from DB"
+        })
+    } catch (error) {
+        res.json({
+            "success": false,
+            "message": "could not get the data from de DB"
+        })
+        console.log(error);
     }
 })
 

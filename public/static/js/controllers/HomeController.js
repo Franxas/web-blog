@@ -5,5 +5,4 @@ export default class HomeController extends AbstractController {
     constructor() {
         super();
     }
-
 }

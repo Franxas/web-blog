@@ -6,14 +6,12 @@ export default class EntryEditorController extends AbstractController {
         super();
     }
 
-    async saveEntry(entryTitle, entryData) {
+    async saveEntry(entryData) {
 
         console.log('testing entry:');
-        console.log(entryTitle);
+        console.log(entryData.title);
         console.log(entryData);
 
-        entryData.title = entryTitle;
-        
         const response = await fetch('/api/save-entry', {
             method: 'POST',
             headers: {
@@ -23,6 +21,21 @@ export default class EntryEditorController extends AbstractController {
         });
         const data = await response.json();
         console.log(data);
+
+        await this.previewController.showView(entryData);
     }
+
+    setPreviewController(previewController) {
+        this.previewController = previewController;
+    }
+
+    async showView(entry) {
+        document.querySelector('#app').innerHTML = await this.view.getHTML();
+        await this.view.loadEditor(entry);
+    }
+
+    
+
+
 
 }
