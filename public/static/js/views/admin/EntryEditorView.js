@@ -9,7 +9,7 @@ export default class EntryEditorView extends AbstractView {
 
     async getHTML() {
 
-        //placeholder in input text with value of previous document when editing?
+        //placeholder in input text with value of previous document when editing
 
         return `
             <h1>Entry Editor</h1>
@@ -34,7 +34,9 @@ export default class EntryEditorView extends AbstractView {
     loadEditor(entry) {
 
 
-        // precisa criar um logica de 
+
+        console.log("testing");
+        console.log(entry);
 
         this.editor = new EditorJS({
 
@@ -56,7 +58,11 @@ export default class EntryEditorView extends AbstractView {
 
         const submitButton = document.getElementById("submit-entry-button");
         const titleInput = document.getElementById("entry-title");
-        titleInput.value = entry.title;
+
+        if (entry) {
+            titleInput.value = entry.title;
+        }
+
         submitButton.addEventListener("click", async (e) => {
             e.preventDefault();
             const title = titleInput.value;
@@ -69,6 +75,7 @@ export default class EntryEditorView extends AbstractView {
         
                 const resulData = await this.editor.save();
                 resulData.title = title;
+                
                 // so mayne somewhere in here I need to add an ID atribute to the resulting data. I can get this from the entrie that was passed as an argument to this function
                 // maybe I can even have the title be an atribute instead of passing two arguments to the saveEntry controller func
 

@@ -49,4 +49,5 @@ export default class extends AbstractView {
         homeAnch.style.color = "white";
         homeAnch.style.backgroundColor = "black";
     }
+
 }

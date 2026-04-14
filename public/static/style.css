@@ -45,3 +45,7 @@ a {
   color: black;
 }
 
+.projects-list li {
+  margin-bottom: 10px;
+}
+

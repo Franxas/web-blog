@@ -6,6 +6,7 @@ const multer  = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const Entry = require('../entry');
+const mongoose = require('mongoose');
 
 
 router.post('/upload-image', upload.single('image'), async (request, response) => {
@@ -66,10 +67,6 @@ router.post('/save-entry', async (req, res) => {
     console.log(entry);
 })
 
-
-
-
-
 router.get('/entries', async (req, res) => {
 
     console.log('received a request to get all entries');
@@ -91,5 +88,28 @@ router.get('/entries', async (req, res) => {
     }
 })
 
+router.post('/login', async (req, res) => {
+
+    const { email, password } = req.body;
+    console.log("testing login server");
+    console.log(email);
+    console.log(password);
+
+    const db = mongoose.connection;
+    const result = await db.collection("password").find({}).toArray();
+    console.log(result);
+    console.log(result[0].email);
+    console.log(result[0].password);
+
+    let flag = false;
+
+    if (result[0].email == email && result[0].password == password) {
+        flag = true;
+    } else {
+        flag = false;
+    }
+
+    res.json({ "flag": flag });
+});
 
 module.exports = router;

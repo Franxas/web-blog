@@ -11,8 +11,21 @@ export default class extends AbstractView {
 
         await this.highlightAnchor();
         return `
-            <h1>Projects</h1>
-            <ul id="projects-list"></ul>
+            <p style="margin: 0px; margin-top: 10px"><i>Projects</i></p>
+            <ul class="projects-list" style="list-style-type: none; padding-left: 0;">
+                <li><a href="/projects/test2" data-link">27/04/2026 VFX Scream Study I'A'V'</a></li>
+                <li><a href="/projects/test3" data-link">30/11/2024 Verde Latente</a></li>
+            </ul>
+            <p style="margin: 0px;"><i>&lt;Music&gt;</i></p>
+            <ul class="projects-list" style="list-style-type: none; padding-left: 0;">
+                <li><a href="https://franzacom.bandcamp.com/track/algorave-lisbon-08-04-2026">08/04/2026 toplap.pt Algorave Lisbon</a></li>
+            </ul>
+            <p style="margin: 0px;"><i>&lt;Max MSP&gt;</i></p>
+            <ul class="projects-list" style="list-style-type: none; padding-left: 0;">
+                <li><a href="https://franzacom.bandcamp.com/track/algorave-lisbon-08-04-2026">8SS Step Sequencer with Modulation</a></li>
+                <li><a href="https://franzacom.bandcamp.com/track/algorave-lisbon-08-04-2026">MBMC Musicbox</a></li>
+                <li><a href="https://franzacom.bandcamp.com/track/algorave-lisbon-08-04-2026">FMSyn Multi-channel Harmonics FM Synth </a></li>
+            </ul>
         `;
     }
 
@@ -30,27 +43,6 @@ export default class extends AbstractView {
         homeAnch.style.backgroundColor = "black";
     }
 
-/*     async posH1() {
 
-        const header = document.getElementById("franzacom");
-        let franText = "franzaCom";
-        let franArray = franText.split("");        
-        header.textContent = "";
 
-        let xOffset = 0;
-        let yOffset = -30;
-        let xOffRdm = Math.random() * 60;
-
-        for (let i = 0; i < franArray.length; i++) {
-
-            const span = document.createElement("span");
-            span.textContent = franArray[i];
-
-            const drop = Math.random() * 90 + 20; // random "drop" distance
-            span.style.transform = `translate(${xOffset}px, ${yOffset}px)`;        
-            header.appendChild(span);
-            xOffset += xOffRdm;
-            yOffset += drop;
-        }
-    }; */
 }

@@ -8,10 +8,6 @@ export default class EntryEditorController extends AbstractController {
 
     async saveEntry(entryData) {
 
-        console.log('testing entry:');
-        console.log(entryData.title);
-        console.log(entryData);
-
         const response = await fetch('/api/save-entry', {
             method: 'POST',
             headers: {

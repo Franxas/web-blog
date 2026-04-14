@@ -30,8 +30,9 @@ export default class extends AbstractView {
         for (const block of entry.blocks) {
 
             if (block.type === "header") {
-                const b =  document.createElement(`h${block.data.level}`);
-                b.textContent = block.data.text;
+                const b =  document.createElement("p");
+                b.textContent = "<" + block.data.text + ">";
+                b.style.fontStyle = "italic";
                 previewDiv.appendChild(b);
             } else if (block.type === "paragraph") {
                 const b =  document.createElement("p");

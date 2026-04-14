@@ -29,7 +29,7 @@ export default class extends AbstractView {
 
             if (block.type === "header") {
                 const b =  document.createElement("p");
-                b.textContent = block.data.text;
+                b.textContent = "<" + block.data.text + ">";
                 b.style.fontStyle = "italic";
                 previewDiv.appendChild(b);
             } else if (block.type === "paragraph") {
