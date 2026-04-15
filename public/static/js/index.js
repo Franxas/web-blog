@@ -8,7 +8,8 @@ const router = async () => {
             { path: '/admin/editor', controller: controllers.editor},
             { path: '/', controller: controllers.home },
             { path: '/posts', controller: controllers.posts},
-            { path: '/projects', controller: controllers.projects}
+            { path: '/projects', controller: controllers.projects},
+            { path: '/synth', controller: controllers.synth}
     ];
 
     const match = routes.find(route => route.path === location.pathname) || routes[0]; //location.pathname meaning the path portion of the current url

@@ -5,6 +5,8 @@ import PostsView from "../views/PostsView.js";
 import ProjectsController from "../controllers/ProjectsController.js";
 import ProjectsView from "../views/ProjectsView.js";
 import PublicPreviewView from "../views/PublicPreviewView.js";
+import SynthController from "../controllers/SynthController.js";
+import SynthView from "../views/SynthView.js";
 // admin
 import AdminLoginView from "../views/admin/AdminLoginView.js";
 import AdminLoginController from "../controllers/admin/AdminLoginController.js";
@@ -67,6 +69,12 @@ const init = function() { // this might hahve to be asynchronous
     projectsController.setView(projectsView);
     projectsView.setController(projectsController);
 
+    //Synth dependencies
+    const synthController = new SynthController();
+    const synthView = new SynthView();
+    synthController.setView(synthView);
+    synthView.setController(synthController);
+
 
     return {
         adminLogin: adminLoginController,
@@ -74,7 +82,8 @@ const init = function() { // this might hahve to be asynchronous
         home: homeController,
         posts: postsController,
         projects: projectsController,
-        editor: editorController
+        editor: editorController,
+        synth: synthController
     }
 }
 

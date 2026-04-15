@@ -1,8 +1,10 @@
+    
     export default async function glitchWindow() {
 
             const rect1 = document.createElement("div");
             const rect2 = document.createElement("div");
             const rect3 = document.createElement("div");
+            const rect4 = document.createElement("div");
 
             let xPos1 = (Math.random() * 500) + 300;
             let yPos1 = Math.random() * 300;
@@ -40,9 +42,22 @@
             rect3.style.height = `${height3}px`;
             rect3.style.backgroundColor = `white`;
 
+            let xPos4 = (Math.random() * 500) + 300;
+            let yPos4 = Math.random() * 300;
+            let width4 = Math.random() * 500;
+            let height4 = Math.random() * 500;
+            rect4.style.display = "none";
+            rect4.style.position = "absolute";
+            rect4.style.top = `${yPos4}px`;
+            rect4.style.left = `${xPos4}px`;
+            rect4.style.width = `${width4}px`;
+            rect4.style.height = `${height4}px`;
+            rect4.style.backgroundColor = `white`;
+
             const appWindow = document.getElementById("app");
             appWindow.appendChild(rect1);
             appWindow.appendChild(rect2);
+            appWindow.appendChild(rect3);
             appWindow.appendChild(rect3);
 
         setInterval(() => {
@@ -77,10 +92,21 @@
             rect3.style.width = `${width3}px`;
             rect3.style.height = `${height3}px`;
 
+            xPos4 = (Math.random() * 500) + 300;
+            yPos4 = Math.random() * 300;
+            width4 = Math.random() * 500;
+            height4 = Math.random() * 500;
+            rect4.style.top = `${yPos4}px`;
+            rect4.style.left = `${xPos4}px`;
+            rect4.style.width = `${width4}px`;
+            rect4.style.height = `${height4}px`;
+            
+
             setTimeout(() => {
                 rect1.style.display = "none";
                 rect2.style.display = "none";
                 rect3.style.display = "none";
+                rect4.style.display = "none";
             }, 50);
 
         }, 2500);
