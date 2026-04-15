@@ -1,5 +1,6 @@
 import controllers from "./utils/bootstrap.js";
 
+
 const router = async () => {
 
     const routes = [
@@ -14,6 +15,12 @@ const router = async () => {
 
     const match = routes.find(route => route.path === location.pathname) || routes[0]; //location.pathname meaning the path portion of the current url
     const controller = match.controller;
+
+    console.log()
+
+    if (controllers.synth.getState()) {
+        await controllers.synth.stop();
+    }
     await controller.showView();
 } 
 

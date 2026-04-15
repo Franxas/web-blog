@@ -13,6 +13,12 @@ export default class extends AbstractView {
         return `
             <div style="margin-top: 10px">
                 <p><i>Synth</i></p>
+                <div id="synthDiv">
+                    <div id="rnbo-parameter-sliders">
+                        <h2>Parameters</h2>
+                        <em id="no-param-label">No parameters</em>
+                    </div>
+                </div>
             </div>
         `;
     }
@@ -26,7 +32,7 @@ export default class extends AbstractView {
             e.style.backgroundColor = "white";
         });
 
-        const homeAnch = document.getElementById("home-anchor");
+        const homeAnch = document.getElementById("synth-anchor");
         homeAnch.style.color = "white";
         homeAnch.style.backgroundColor = "black";
     }
