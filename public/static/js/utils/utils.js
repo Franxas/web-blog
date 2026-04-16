@@ -58,7 +58,7 @@
             appWindow.appendChild(rect1);
             appWindow.appendChild(rect2);
             appWindow.appendChild(rect3);
-            appWindow.appendChild(rect3);
+            appWindow.appendChild(rect4);
 
         setInterval(() => {
 
@@ -92,6 +92,7 @@
             rect3.style.width = `${width3}px`;
             rect3.style.height = `${height3}px`;
 
+            rect4.style.display = "flex";
             xPos4 = (Math.random() * 500) + 300;
             yPos4 = Math.random() * 300;
             width4 = Math.random() * 500;

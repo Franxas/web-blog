@@ -49,3 +49,12 @@ a {
   margin-bottom: 10px;
 }
 
+body.dark-mode {
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+
+body.dark-mode a {
+  color: white;
+}
+

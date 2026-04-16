@@ -30,7 +30,14 @@ const navigate = function(url) {
     router();
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    const modeToggle = document.getElementById("color-mode");
+    modeToggle.addEventListener("click", e => {
+        e.preventDefault();
+        document.body.classList.toggle("dark-mode");
+    })
 
 
     document.addEventListener('click', (e) => {
@@ -43,4 +50,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('popstate', router);
 
     router();
+
 })
