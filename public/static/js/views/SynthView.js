@@ -15,8 +15,6 @@ export default class extends AbstractView {
                 <p><i>Synth</i></p>
                 <div id="synthDiv">
                     <div id="rnbo-parameter-sliders">
-                        <h2>Parameters</h2>
-                        <em id="no-param-label">No parameters</em>
                     </div>
                 </div>
             </div>

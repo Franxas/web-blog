@@ -35,23 +35,15 @@ export default class HomeController extends AbstractController {
     async init({device, context}) {
 
         device.node.connect(context.destination);
-
         // Print the names of all the top-level parameters in the device.
         device.parameters.forEach(parameter => {
-            // Each parameter has an ID as well as a name. The ID will include
-            // the full path to the parameter, including the names of any parent
-            // patchers if the parameter is in a subpatcher. So if the path contains
-            // any "/" characters, you know that it's not a top level parameter.
-
-            // Uncomment this line to include only top level parameters.
-            // if (parameter.id.includes("/")) return;
-
+            
             console.log(parameter.id);
             console.log(parameter.name);
         });
 
-        await this.makeSliders(device);
-
+        // await this.makeSliders(device);
+        await this.createSketch(device);
         this.state = true;
         document.addEventListener("click", () => {
 
@@ -65,6 +57,7 @@ export default class HomeController extends AbstractController {
     }
 
     async makeSliders(device) {
+
         let pdiv = document.getElementById("rnbo-parameter-sliders");
         let noParamLabel = document.getElementById("no-param-label");
         if (noParamLabel && device.numParameters > 0) pdiv.removeChild(noParamLabel);
@@ -74,12 +67,6 @@ export default class HomeController extends AbstractController {
         let uiElements = {};
 
         device.parameters.forEach(param => {
-            // Subpatchers also have params. If we want to expose top-level
-            // params only, the best way to determine if a parameter is top level
-            // or not is to exclude parameters with a '/' in them.
-            // You can uncomment the following line if you don't want to include subpatcher params
-            
-            //if (param.id.includes("/")) return;
 
             // Create a label, an input slider and a value display
             let label = document.createElement("label");
@@ -149,6 +136,51 @@ export default class HomeController extends AbstractController {
             // Add the slider element
             pdiv.appendChild(sliderContainer);
         });
+    }
+
+    async createSketch(device) {
+
+        // volume down testing
+        const gainParam = device.parametersById.get("gain");
+        const masterFreqParam = device.parametersById.get("master_phasor_freq");
+        const swingDiv = device.parametersById.get("impulses/swing_div");
+
+
+        //gainParam.value = 0;
+        const params = device.parameters;
+
+        const sketch = (p) => {
+
+
+            let xpos;
+            let ypos;
+
+            p.setup = () => {
+                const canvas = p.createCanvas(200, 200);
+                canvas.parent('app');
+
+                xpos = p.width / 2;
+                ypos = p.height / 2;
+            };
+
+            p.draw = () => {
+                if (p.mouseIsPressed) {
+
+                    xpos = p.mouseX;
+                    ypos = p.mouseY;
+                    masterFreqParam.value = p.map(p.mouseX, 0, p.width, masterFreqParam.min, masterFreqParam.max);
+                    swingDiv.value = p.map(p.mouseY, 0, p.height, swingDiv.min, swingDiv.max);
+                }
+
+
+                p.background(0);
+                p.fill(255);
+                p.noStroke()
+                p.circle(xpos, ypos, 24);
+            };
+        };
+
+        const myP5 = new p5(sketch);
     }
 
     getState() {
