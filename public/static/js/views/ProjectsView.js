@@ -13,8 +13,19 @@ export default class extends AbstractView {
         return `
             <p style="margin: 0px; margin-top: 10px"><i>Projects</i></p>
             <ul class="projects-list" style="list-style-type: none; padding-left: 0;">
-                <li><a href="/projects/test2">27/04/2026 VFX Scream Study I'A'V'</a></li>
-                <li><a href="https://www.youtube.com/watch?v=cpHmQD2QFPE">30/11/2024 Verde Latente</a></li>
+                <li>
+                    <div>
+                        <a id= "iav-anchor" href="">27/04/2026 VFX Scream Study I'A'V'</a>
+                        <div id="iav" style="display: flex-box"></div>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a id="verde-latente-anchor" href="">30/11/2024 Verde Latente</a>
+                        <div id="verde-latente" style="display: flex-box"></div>
+                    </div>
+                </li>
+
             </ul>
             <p style="margin: 0px;"><i>&lt;Music&gt;</i></p>
             <ul class="projects-list" style="list-style-type: none; padding-left: 0;">
@@ -41,6 +52,84 @@ export default class extends AbstractView {
         const homeAnch = document.getElementById("projs-anchor");
         homeAnch.style.color = "white";
         homeAnch.style.backgroundColor = "black";
+    }
+
+    async init() {
+
+        const vlAnch = document.getElementById("verde-latente-anchor");
+        const vlDiv = document.getElementById("verde-latente");
+        const iavAnch = document.getElementById("iav-anchor");
+        const iavDiv = document.getElementById("iav");
+
+        vlAnch.addEventListener("click", e => {
+
+            e.preventDefault();
+            
+            if (vlDiv.children.length > 0) {
+
+                while (vlDiv.firstChild) {
+                    vlDiv.removeChild(vlDiv.firstChild);
+                }
+            } else {
+                const img1 = document.createElement("img");
+                img1.src = "/static/resources/verde-latente1.jpg";
+                const img2 = document.createElement("img");
+                img2.src = "/static/resources/verde-latente-2.jpg";
+                const txt1 = document.createElement("p");
+                const txt2 = document.createElement("p");
+                const txt3 = document.createElement("p");
+                txt1.textContent = "This project was developed in collaboration with the photographer Joana Hintze, for an exhibition hosted by Solar gallery, in Vila do Conde."
+                txt2.textContent = "The program consists of an algorithm developed to establish the contours of our virtual ecosystem as represented in the installation. It manifests itself through the different audiovisual elements present in the space. The fauna and flora are interpreted through the various multimedia forms of the installation, which consists of three dynamic images and six sound layers. The way these elements are presented varies according to the values of climate data charts from the year 2022 in Ponta Delgada. The goal was to simulate a small network between these elements and the variable environmental conditions in which they exist."
+                txt3.textContent = "This project was developed in Cycling 74's Max. The sounds are all synthesized with native Max Msp tools only."
+                vlDiv.appendChild(txt1);
+                vlDiv.appendChild(txt2);
+                vlDiv.appendChild(txt3);
+                vlDiv.appendChild(img1);
+                vlDiv.appendChild(img2);
+            }
+        })
+
+        iavAnch.addEventListener("click", e => {
+
+            e.preventDefault();
+            
+            if (iavDiv.children.length > 0) {
+
+                while (iavDiv.firstChild) {
+                    iavDiv.removeChild(iavDiv.firstChild);
+                }
+            } else {
+                const img1 = document.createElement("img");
+                const img2 = document.createElement("img");
+                const img3 = document.createElement("img");
+                const img4 = document.createElement("img");
+                img1.src = "/static/resources/iav-1.png";
+                img2.src = "/static/resources/iav-2.png";
+                img3.src = "/static/resources/iav-3.png";
+                img4.src = "/static/resources/iav-4.png";
+                img1.style.margin = "5px";
+                img2.style.margin = "5px";
+                img3.style.margin = "5px";
+                img4.style.margin = "5px";
+                const txt1 = document.createElement("p");
+                const txt2 = document.createElement("p");
+                const txt3 = document.createElement("p");
+                txt1.textContent = `Videoclip in colaboration with I'A'V' for their music single "Scream Study".`
+                txt2.textContent = `Visual effects were made in a Javascript project using p5.js and ml5.js libraries. I runned a Max patcher to playback the clip and draw MIDI automation that was then send to my browser program via WebMIDI.js.`
+                txt3.textContent = `Youtube link: `
+                iavDiv.appendChild(txt1);
+                iavDiv.appendChild(txt2);
+                iavDiv.appendChild(txt3);
+                iavDiv.appendChild(img1);
+                iavDiv.appendChild(img2);
+                iavDiv.appendChild(img3);
+                iavDiv.appendChild(img4);
+            }
+        })
+
+        
+
+
     }
 
 
