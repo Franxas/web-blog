@@ -49,6 +49,12 @@ export default class HomeController extends AbstractController {
 
             context.resume();
         })
+
+        const masterFreqParam = device.parametersById.get("master_phasor_freq");
+        const swingDiv = device.parametersById.get("impulses/swing_div");
+
+        masterFreqParam.value = 0.5;
+        swingDiv.value = 10;
     }
 
     async stop() {
@@ -135,6 +141,8 @@ export default class HomeController extends AbstractController {
 
             // Add the slider element
             pdiv.appendChild(sliderContainer);
+
+
         });
     }
 
@@ -157,7 +165,7 @@ export default class HomeController extends AbstractController {
 
             p.setup = () => {
                 const canvas = p.createCanvas(200, 200);
-                canvas.parent('app');
+                canvas.parent('synthDiv');
 
                 xpos = p.width / 2;
                 ypos = p.height / 2;
@@ -168,8 +176,13 @@ export default class HomeController extends AbstractController {
 
                     xpos = p.mouseX;
                     ypos = p.mouseY;
-                    masterFreqParam.value = p.map(p.mouseX, 0, p.width, masterFreqParam.min, masterFreqParam.max);
-                    swingDiv.value = p.map(p.mouseY, 0, p.height, swingDiv.min, swingDiv.max);
+                    xpos = (xpos < 0) ? 0 : xpos;
+                    xpos = (xpos > p.width) ? p.width : xpos;
+                    ypos = (ypos < 0) ? 0 : ypos;
+                    ypos = (ypos > p.height) ? p.height : ypos;
+
+                    masterFreqParam.value = p.map(xpos, 0, p.width, masterFreqParam.min, masterFreqParam.max) / 20;
+                    swingDiv.value = swingDiv.max - p.map(ypos, 0, p.height, swingDiv.min, swingDiv.max);
                 }
 
 

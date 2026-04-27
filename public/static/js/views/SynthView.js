@@ -11,12 +11,8 @@ export default class extends AbstractView {
 
         await this.highlightAnchor();
         return `
-            <div style="margin-top: 10px">
-                <p><i>Synth</i></p>
-                <div id="synthDiv">
-                    <div id="rnbo-parameter-sliders">
-                    </div>
-                </div>
+            <div id="synthDiv" style="margin-top: 30px; display: flex; justify-content: center">
+                <div id="rnbo-parameter-sliders"> </div>
             </div>
         `;
     }
