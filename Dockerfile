@@ -3,7 +3,7 @@
 FROM node:20 AS build
 
 # Set the working directory inside the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy package.json and package-lock.json first to leverage Docker caching.
 # If these files don't change, subsequent builds can skip 'npm install'.
@@ -20,19 +20,18 @@ COPY . .
 FROM node:20
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy the node_modules and built application files from the 'build' stage
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/package*.json ./
-COPY --from=build /usr/src/app .
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
+COPY --from=build /app .
 
 # Expose the port your app runs on
-ENV PORT=8080
-EXPOSE $PORT
+EXPOSE 3000
 
 # Run the application using the non-root user (recommended for security)
 USER node
 
 # Define the command to start your application
-CMD [ "node", "index.js" ]
+CMD [ "node", "private/server.js" ]
