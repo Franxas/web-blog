@@ -159,41 +159,72 @@ export default class HomeController extends AbstractController {
 
         const sketch = (p) => {
 
+            let paramTarget;
 
-            let xpos;
-            let ypos;
-            let knobCol;
+            let xy_xpos;
+            let xy_ypos;
+            let xy_knobCol;
+
+            let sl1_ypos;
 
             p.setup = () => {
-                const canvas = p.createCanvas(200, 200);
+                const canvas = p.createCanvas(300, 200);
                 canvas.parent('synthDiv');
 
-                xpos = p.width / 2;
-                ypos = p.height / 2;
+                xy_xpos = p.width / 2;
+                xy_ypos = p.height / 2;
             };
 
             p.draw = () => {
-                knobCol = [255, 255, 255];
-                if (p.mouseIsPressed) {
+                xy_knobCol = [255, 255, 255];
 
-                    knobCol = [255, 255, 100]
-                    xpos = p.mouseX;
-                    ypos = p.mouseY;
-                    xpos = (xpos < 0) ? 0 : xpos;
-                    xpos = (xpos > p.width) ? p.width : xpos;
-                    ypos = (ypos < 0) ? 0 : ypos;
-                    ypos = (ypos > p.height) ? p.height : ypos;
+                if (paramTarget == "xy") {
 
-                    masterFreqParam.value = p.map(xpos, 0, p.width, masterFreqParam.min, masterFreqParam.max) / 20;
-                    swingDiv.value = swingDiv.max - p.map(ypos, 0, p.height, swingDiv.min, swingDiv.max);
+                    xy_knobCol = [255, 255, 100]
+                    xy_xpos = p.mouseX;
+                    xy_ypos = p.mouseY;
+                    xy_xpos = (xy_xpos < 0) ? 0 : xy_xpos;
+                    xy_xpos = (xy_xpos > 200) ? 200 : xy_xpos;
+                    xy_ypos = (xy_ypos < 0) ? 0 : xy_ypos;
+                    xy_ypos = (xy_ypos > 200) ? 200 : xy_ypos;
+
+                    masterFreqParam.value = p.map(xy_xpos, 0, p.width, masterFreqParam.min, masterFreqParam.max) / 20;
+                    swingDiv.value = swingDiv.max - p.map(xy_ypos, 0, p.height, swingDiv.min, swingDiv.max);
+                }
+
+                if (paramTarget == "sl1") {
+
+                    sl1_ypos = p.mouseY;
+                    sl1_ypos = (sl1_ypos < 0) ? 0 : sl1_ypos;
+                    sl1_ypos = (sl1_ypos > 160) ? 160 : sl1_ypos;
                 }
 
 
-                p.background(0);
-                p.fill(knobCol);
+                p.background(255);
                 p.noStroke()
-                p.circle(xpos, ypos, 24);
+                p.fill(0);
+                p.rect(0, 0, 200, 200);
+                p.fill(xy_knobCol);
+                p.circle(xy_xpos, xy_ypos, 24);
+                /* p.fill(0);
+                p.rect(230, 60, 40, sl1_ypos); */
+
+
+
             };
+
+            p.mousePressed = () => {
+
+                if (p.mouseX >= 0 && p.mouseX <= 200 && p.mouseY >= 0 && p.mouseY <= 200) {
+                    paramTarget = "xy";
+                } /* else if(p.mouseX >= 230 && p.mouseX <= 270 && p.mouseY >= 60 && p.mouseY <= 200) {
+                    paramTarget = "sl1";
+                } */
+            }
+
+            p.mouseReleased = () => {
+                paramTarget = "";
+            }
         };
 
         const myP5 = new p5(sketch);

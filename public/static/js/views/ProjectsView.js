@@ -120,16 +120,21 @@ export default class extends AbstractView {
                 const txt1 = document.createElement("p");
                 const txt2 = document.createElement("p");
                 const link1 = document.createElement("a");
-                txt1.textContent = `Videoclip made in colaboration with I'A'V' for their music single "Scream Study".`
+                const link2 = document.createElement("a");
+                txt1.textContent = `Videoclip made in colaboration with I'A'V' for their music single "Scream Study" from the album "Volatile Poem" (SUC81, Sucata Tapes 2026).`
                 txt2.textContent = `Visual effects were developed in Javascript using p5.js and ml5.js libraries. I runned a Max patcher to playback the clip and draw MIDI automation that was then sent to my browser program on playback, via WebMIDI.js.`
                 link1.textContent = `<Youtube link>`;
                 link1.style.fontStyle = "italic";
-                link1.href = "https://youtu.be/oIws9v1693Q";
+                link1.href = "https://www.youtube.com/watch?v=uqjKHOBoTyY";
+                link2.textContent = `<Album on Bandcamp>`;
+                link2.style.fontStyle = "italic";
+                link2.href = "https://iaviaviav.bandcamp.com/album/volatile-poem";
 
 
                 iavDiv.appendChild(txt1);
                 iavDiv.appendChild(txt2);
                 iavDiv.appendChild(link1);
+                iavDiv.appendChild(link2);
                 /* iavDiv.appendChild(img1);
                 iavDiv.appendChild(img2);
                 iavDiv.appendChild(img3); */
