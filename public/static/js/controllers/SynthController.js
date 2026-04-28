@@ -162,6 +162,7 @@ export default class HomeController extends AbstractController {
 
             let xpos;
             let ypos;
+            let knobCol;
 
             p.setup = () => {
                 const canvas = p.createCanvas(200, 200);
@@ -172,8 +173,10 @@ export default class HomeController extends AbstractController {
             };
 
             p.draw = () => {
+                knobCol = [255, 255, 255];
                 if (p.mouseIsPressed) {
 
+                    knobCol = [255, 255, 100]
                     xpos = p.mouseX;
                     ypos = p.mouseY;
                     xpos = (xpos < 0) ? 0 : xpos;
@@ -187,7 +190,7 @@ export default class HomeController extends AbstractController {
 
 
                 p.background(0);
-                p.fill(255);
+                p.fill(knobCol);
                 p.noStroke()
                 p.circle(xpos, ypos, 24);
             };

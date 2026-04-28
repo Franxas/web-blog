@@ -4,7 +4,7 @@ export default class extends AbstractView {
 
     constructor() {
         super();
-        this.setTitle('posts###');
+        this.setTitle('entries');
     }
 
     async getHTML() {
