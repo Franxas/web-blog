@@ -171,8 +171,8 @@ export default class HomeController extends AbstractController {
                 const canvas = p.createCanvas(300, 200);
                 canvas.parent('synthDiv');
 
-                xy_xpos = p.width / 2;
-                xy_ypos = p.height / 2;
+                xy_xpos = 100;
+                xy_ypos = 100;
             };
 
             p.draw = () => {
@@ -188,8 +188,8 @@ export default class HomeController extends AbstractController {
                     xy_ypos = (xy_ypos < 0) ? 0 : xy_ypos;
                     xy_ypos = (xy_ypos > 200) ? 200 : xy_ypos;
 
-                    masterFreqParam.value = p.map(xy_xpos, 0, p.width, masterFreqParam.min, masterFreqParam.max) / 20;
-                    swingDiv.value = swingDiv.max - p.map(xy_ypos, 0, p.height, swingDiv.min, swingDiv.max);
+                    masterFreqParam.value = p.map(xy_xpos, 0, 200, masterFreqParam.min, masterFreqParam.max) / 20;
+                    swingDiv.value = swingDiv.max - p.map(xy_ypos, 0, 200, swingDiv.min, swingDiv.max);
                 }
 
                 if (paramTarget == "sl1") {
