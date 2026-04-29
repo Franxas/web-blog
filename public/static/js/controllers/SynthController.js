@@ -200,10 +200,11 @@ export default class HomeController extends AbstractController {
                 }
 
 
-                p.background(255);
-                p.noStroke()
+                p.background(255, 255, 255, 0);
+                p.stroke(255);
                 p.fill(0);
                 p.rect(0, 0, 200, 200);
+                p.noStroke();
                 p.fill(xy_knobCol);
                 p.circle(xy_xpos, xy_ypos, 24);
                 /* p.fill(0);

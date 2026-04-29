@@ -11,7 +11,6 @@ export default class PostsController extends AbstractController {
     async showView() {
         document.querySelector('#app').innerHTML = await this.view.getHTML();
         await this.view.listEntries(await this.getaAllEntries());
-        await glitchWindow();
     }
 
     async showPreviewView(entry) {

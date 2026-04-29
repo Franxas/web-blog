@@ -10,6 +10,5 @@ export default class ProjectsController extends AbstractController {
     async showView() {
         document.querySelector('#app').innerHTML = await this.view.getHTML();
         await this.view.init();
-        await glitchWindow();
     }
 }
