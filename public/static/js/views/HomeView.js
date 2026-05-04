@@ -16,7 +16,7 @@ export default class extends AbstractView {
                 <a href="https://mastodon.social/@franxas">mastodon</a>
                 <a href="https://franzacom.bandcamp.com/">bandcamp</a>
             </div>
-            <p>Hello! My name is Francisco, I’m a computer musician, software engineer, and multimedia artist. I'm also an everyday always learning and studying enthusiast. I work with Max/MSP, as well as with Java and JavaScript environments, where I like to explore cross-disciplinary intersections through the conception and development of different algorithms and programs. I encourage practice and experimentation as the starting point for my work and projects. I’m based in Lisbon if you ever want to meet and talk about project ideas / colabs or maybe you are some place away, in any case, feel free to contact me.</p>
+            <p>Hello! My name is Francisco, I’m a computer musician, software engineer, and multimedia artist. I'm also an everyday always learning and studying enthusiast. I work with Max/MSP, as well as with Java and JavaScript environments, where I like to explore cross-disciplinary intersections through the conception and development of different algorithms and programs. I encourage practice and experimentation as the starting point for my work and projects. I’m based in Lisbon if you ever want to meet and talk about project ideas / collabs or maybe you are some place away, in any case, feel free to contact me.</p>
         `;
     }
 

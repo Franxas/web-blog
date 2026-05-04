@@ -199,14 +199,15 @@ export default class HomeController extends AbstractController {
                     sl1_ypos = (sl1_ypos > 160) ? 160 : sl1_ypos;
                 }
 
-
-                p.background(255, 255, 255, 0);
                 p.stroke(255);
                 p.fill(0);
                 p.rect(0, 0, 200, 200);
+                p.background(255, 255, 255, 0);
                 p.noStroke();
                 p.fill(xy_knobCol);
                 p.circle(xy_xpos, xy_ypos, 24);
+                p.fill(255);
+                p.rect(200, 0, 100, 200); 
                 /* p.fill(0);
                 p.rect(230, 60, 40, sl1_ypos); */
 
