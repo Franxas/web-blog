@@ -1,5 +1,4 @@
 import AbstractController from "./AbstractController.js";
-import glitchWindow from "../utils/utils.js";
 
 export default class PostsController extends AbstractController {
 

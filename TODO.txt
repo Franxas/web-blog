@@ -1,11 +1,1 @@
 TODO:
-
-Entry Editor:
--> add a button to go back / cancel editing and discard changes. this should take you back to entries list
-
-Posts user view
--> populate it with list of entries. just like in the admin view. 
-
--> nas view algumas funções são iguais. pouco reaproveitamento do codigo. talvez arrumar um pouco
-
--> finish test pºassword logic. send inout data to api and test server side. return flag.
