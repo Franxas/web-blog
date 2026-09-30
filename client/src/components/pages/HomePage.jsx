@@ -3,14 +3,7 @@ import { useEffect } from "react";
 
 export default function HomePage() {
 
-    /* useEffect(() => {
-
-        const sketch = createSketch();
-
-        return () => {
-            sketch.remove();
-        }
-    }, [window.innerWidth, window.innerHeight]); */
+    
 
     return (
         <div className="homepage">

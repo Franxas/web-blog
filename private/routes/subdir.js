@@ -8,6 +8,29 @@ const upload = multer({ storage });
 const Entry = require('../entry');
 const mongoose = require('mongoose');
 
+router.post('/login', async (req, res) => {
+
+    const { email, password } = req.body;
+    console.log("testing login server");
+    console.log(email);
+    console.log(password);
+
+    const db = mongoose.connection;
+    const result = await db.collection("password").find({}).toArray();
+    console.log(result);
+    console.log(result[0].email);
+    console.log(result[0].password);
+
+    let flag = false;
+
+    if (result[0].email == email && result[0].password == password) {
+        flag = true;
+    } else {
+        flag = false;
+    }
+
+    res.json({ "flag": flag });
+});
 
 router.post('/upload-image', upload.single('image'), async (request, response) => {
 
@@ -69,16 +92,17 @@ router.post('/save-entry', async (req, res) => {
 
 router.get('/entries', async (req, res) => {
 
-    console.log('received a request to get all entries');
-    const entries = await Entry.find({});
-    console.log(entries);
-
+    console.log("got a request to get all entries from data base");
     try {
+        
+        const entries = await Entry.find({});
+
         res.json({
             "success": true,
             "data":  entries,
             "message": "got all entries from DB"
         })
+        console.log(entries);
     } catch (error) {
         res.json({
             "success": false,
@@ -88,28 +112,61 @@ router.get('/entries', async (req, res) => {
     }
 })
 
-router.post('/login', async (req, res) => {
+router.get('/entrieTitles', async (req, res) => {
 
-    const { email, password } = req.body;
-    console.log("testing login server");
-    console.log(email);
-    console.log(password);
+    console.log("got a request to get all entries from DB and list them")
 
-    const db = mongoose.connection;
-    const result = await db.collection("password").find({}).toArray();
-    console.log(result);
-    console.log(result[0].email);
-    console.log(result[0].password);
+    try {
 
-    let flag = false;
+        const entries = await Entry.find({});
+        const entrieTitleList =  entries.map(e => {
 
-    if (result[0].email == email && result[0].password == password) {
-        flag = true;
-    } else {
-        flag = false;
+            return {
+                id: e.id,
+                title: e.title,
+                date: e.date
+            };
+        });
+
+        res.json({
+            "success": true,
+            "data":  entrieTitleList,
+            "message": "got all entries from DB and listed them"
+        })
+        console.log(entrieTitleList);
+    } catch (error) {
+        res.json({
+            "success": false,
+            "message": "could not get the data from de DB"
+        })
+        console.log(error);
     }
+    
+})
 
-    res.json({ "flag": flag });
-});
+router.get('/entries/:id', async (req, res) => {
+
+    const { id } = req.params;
+
+    console.log("received a request to get an entrie by its ID");
+    try {
+
+        const entry = await Entry.findById(id);
+
+        res.json({
+            "success": true,
+            "data":  entry,
+            "message": "got the entry for the requesed ID"
+        })
+        console.log(entry);
+    } catch (error) {
+
+        res.json({
+            "success": false,
+            "message": "could not get rthe requested entry from the DB"
+        })
+        console.log(error);
+    }
+})
 
 module.exports = router;

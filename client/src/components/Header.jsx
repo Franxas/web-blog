@@ -32,15 +32,6 @@ export default function Header(props) {
                     }
                 }}
             >Projects</NavLink>
-
-            <NavLink 
-                to="/synth" 
-                style={({isActive}) => {
-                    return{
-                        color: isActive ? "#6b6375" : "black"
-                    }
-                }}
-            >Synth</NavLink>
            
             <p className="title">franzaCom</p>
         </nav>

@@ -1,8 +1,10 @@
-import { useState} from "react";
+import { useState } from "react";
 import verdeLatente1 from "../../assets/verde-latente1.jpg";
 import verdeLatente2 from "../../assets/verde-latente-2.jpg";
 import imgIAV1 from "../../assets/iav-1.png"
 import imgIAV2 from "../../assets/iav-4.png"
+
+
 
 export default function ProjectsPage() {
 
@@ -72,7 +74,7 @@ export default function ProjectsPage() {
     return (
         <div className="projectspage">
 
-            <p style={{ fontStyle: "italic" }}>{"Projects"}</p>
+            <p style={{ fontStyle: "italic" }}>Projects</p>
 
             <Project
                 title = {"VFX Scream Study I'A'V'"}
@@ -140,6 +142,12 @@ export default function ProjectsPage() {
                 title = {"toplap.pt Algorave Lisbon"}
                 date = {"08/04/2026"}
                 link = {"https://franzacom.bandcamp.com/track/algorave-lisbon-08-04-2026"}
+            />
+
+            <Project
+                title = {"Nariz Entupido at Damas"}
+                date = {"27/09/2026"}
+                link = {"https://soundcloud.com/franzscom/fcm_damas26092026"}
             />
 
             <p style={{ fontStyle: "italic" }}>{"<Max MSP>"}</p>
