@@ -63,7 +63,7 @@ async function run() {
 run();
 
 app.get(/.*/, (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../public", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../client", "index.html"));
 });
 
 module.exports = {app, mongoose};

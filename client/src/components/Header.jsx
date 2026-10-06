@@ -1,9 +1,6 @@
 import { NavLink } from "react-router";
 export default function Header(props) {
 
-    console.log("testing react");
-
-
     return (
         <nav className = "navbar">
             <NavLink 
@@ -32,8 +29,17 @@ export default function Header(props) {
                     }
                 }}
             >Projects</NavLink>
+
+            <NavLink 
+                to="/synth" 
+                style={({isActive}) => {
+                    return{
+                        color: isActive ? "#6b6375" : "black"
+                    }
+                }}
+            >Synth</NavLink>
            
-            <p className="title">franzaCom</p>
+            <p className="title" style={{ userSelect: "none" }}>franzaCom</p>
         </nav>
     )
 }

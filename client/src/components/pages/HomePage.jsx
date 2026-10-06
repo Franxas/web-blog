@@ -1,4 +1,3 @@
-import { createSketch } from "../../p5/homesketch.js"
 import { useEffect } from "react";
 
 export default function HomePage() {
