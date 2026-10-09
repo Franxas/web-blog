@@ -1,7 +1,9 @@
+const { initWebSocket } = require("./websocket");
 const express = require('express');
 const path = require('path');
+const http = require('http');
+
 const cloudinary = require('cloudinary').v2;
-const multer  = require('multer')
 require('dotenv').config();
 const mongoose = require('mongoose');
 
@@ -11,7 +13,13 @@ app.use('/static', express.static(path.resolve(__dirname, '../public/static')));
 app.use('/api', require('./routes/subdir'));
 
 // run server
-app.listen(process.env.PORT || 3000, () => {console.log('listening at 3000')}); 
+const server = http.createServer(app);
+server.listen(process.env.PORT || 3000, '0.0.0.0', () => {
+    console.log('listening at 3000*');
+});
+//=========================
+
+initWebSocket(server, path);
 
 // config cloud manager
 cloudinary.config( {
@@ -41,10 +49,9 @@ const client = new MongoClient(process.env.DB_URI,  {
 // connect to db
 async function run() {
   try {
-    // Connect the client to the server (optional starting in v4.7)
+    
     await client.connect();
 
-    // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
     
@@ -52,6 +59,7 @@ async function run() {
 
     console.log('there was a problem connecting to the db!');
     console.log(error);
+    return;
   }
 
     //using a test collection in my DB and erasing all data previously stored so to test my program

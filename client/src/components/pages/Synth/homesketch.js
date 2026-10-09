@@ -1,96 +1,304 @@
+import undoImg from '../../../assets/undo.png';
 export function createSketch() {
 
+    // ============================= websockets =============================
+
     let strokesDict = [];
+    let clientId = null;
+
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const socket = new WebSocket(`${protocol}//${window.location.hostname}:3000`);
+    socket.onopen = () => {
+        console.log('CONNECTED');
+    };
+
+    socket.onmessage = (event) => {
+
+        const messageData = JSON.parse(event.data);
+
+        if (messageData.type === "connection") {
+            clientId = messageData.clientId;
+        } else if (messageData.type === "drawing data") {
+            strokesDict = messageData.data;
+        }
+        console.log("data received");
+        console.log(messageData);
+        console.log(strokesDict);
+    };
+
+    socket.onclose = () => {
+        console.log('DISCONNECTED');
+    };
+
+    socket.onerror = (error) => {
+        console.error('WEBSOCKET ERROR:', error);
+    };
+
+    // ============================= websockets =============================
 
     const sketch = (p) => {
 
-        let fzStrokes = [];
-
+        let fzStroke = null;
         // ui elements
-        let colorP;
-        let thicknessS;
-        let undoB;
+        let rgbPolys = [];
+        let strokeColor = [0, 0, 0];
+        let uiColorSel = { color: 0, mousePos: 0, state: false, colorVal: 0};
+        let strokeThickness = 2;
+        let uiStroke = {mousePos: 0, state: false, pos: {x: 30, y:40}, thicknessVal: 2};
+        let uiUndo = {state: false};
+        let undoImage;
+
+        p.preload = () => {
+            undoImage = p.loadImage(undoImg);
+        };
 
         p.setup = () => {
-            const canvas = p.createCanvas(window.innerWidth, window.innerHeight);
 
-            canvas.position(0, 0);
-            canvas.style('position', 'fixed');
-            canvas.style('z-index', '-1');
-
-            createUI();
+            const canvas = p.createCanvas(800, 800);
+            canvas.parent("p5sketch");
+            p.background(228, 254, 252);
+            p.rectMode(p.CENTER);
+            createPolys();
         };
 
         p.draw = () => {
+            
+            p.background(255);
+            drawUI();
 
-            p.background(228, 254, 252);
-            
-            p.push();
-                p.fill(100);
-                p.noStroke();
-                p.rect(window.innerWidth - 300, window.innerHeight - 100, 250, 80);                
-            p.pop();
-            p.push();
-                p.fill(255);
-                p.text("Thickness", window.innerWidth - 262, window.innerHeight - 65)
-            p.pop();
-            
-            if (p.mouseIsPressed && fzStrokes.length > 0 && isMouseLegal()) {
-                fzStrokes[fzStrokes.length - 1].setPos([p.mouseX, p.mouseY]);
-            } else if ((p.mouseIsPressed && fzStrokes.length > 0 && !isMouseLegal())){
-                fzStrokes[fzStrokes.length - 1].setFinished();
+            if (p.mouseIsPressed && fzStroke && isMouseLegal()) {
+
+                fzStroke.setPos([p.mouseX, p.mouseY]);
+                if(p.frameCount % 2 === 0) {
+                    fzStroke.saveStroke();
+                }
+            } else if ((p.mouseIsPressed && fzStroke && !isMouseLegal())){
+                fzStroke.setFinished();
             }
 
-            fzStrokes.forEach(s => {
-                s.display();
-            })
+            if (fzStroke) {
+                fzStroke.display();
+            }
+
+            if (isMouseLegal()) {
+                p.push();
+                    p.stroke(strokeColor);
+                    p.strokeWeight(strokeThickness);
+                    p.point(p.mouseX, p.mouseY);
+                p.pop()
+            }
+
+            // ================== change depending on whats next with data
+            if (strokesDict.length > 0) {
+
+                strokesDict.forEach(s => {
+
+                    p.push();
+                        p.stroke(s.color);
+                        p.strokeWeight(s.thickness);
+
+                        for (let i = 1; i < s.pos.length; i++) {
+
+                                let pCurr = s.pos[i];
+                                let pPrev = s.pos[i - 1];
+                                p.line(pPrev.x, pPrev.y, pCurr.x, pCurr.y);
+                        }
+                    p.pop();
+                })
+            }
+            // ================== change depending on whats next with data
 
         };
 
-        function createUI() {
+        function drawUI() {
 
-            thicknessS = p.createSlider(3, 40, 1, 0.1);
-            thicknessS.size(80, 10);
-            thicknessS.position(window.innerWidth - 280, window.innerHeight - 57);
+            // background ui rectangle
+            p.push();
+                p.fill(240);
+                p.rect(95, 40, 190, 80, 10);
+            p.pop();
 
-            colorP = p.createColorPicker('black');
-            colorP.size(35, 35);
-            colorP.position(window.innerWidth - 175, window.innerHeight - 77);
+            // thickness ui element
+            p.push();
+                p.noStroke();
+                p.fill(strokeColor)
+                p.circle(uiStroke.pos.x, uiStroke.pos.y, p.map(strokeThickness, 1, 30, 4, 38, true));
+            p.pop();
+            p.image(undoImage, 130, 20, 40, 40);
 
-            undoB = p.createButton("Undo");
-            undoB.size(50, 35);
-            undoB.position(window.innerWidth - 130, window.innerHeight - 77);
-            undoB.mousePressed(() => {
-                if (fzStrokes.length > 0) {
-                    fzStrokes.pop();
-                    strokesDict.pop();
+            // undo ui element
+            if (uiUndo.state) {
+                    p.tint(255, 255);
+            } else {
+                p.tint(255, 20);
+            }
+
+            // rba ui element
+            for (let i = 0; i < rgbPolys.length; i++) {
+
+                p.fill(...rgbPolys[i].color);
+                p.stroke(240);
+                p.strokeWeight(3);
+
+                p.beginShape();
+
+                for (let v of rgbPolys[i]) {
+                    p.vertex(v.x, v.y);
                 }
-            });
+                p.endShape(p.CLOSE);
+            }
+
+
+        }
+
+        function createPolys() {
+            let cx = 90;
+            let cy = 40;
+            let r = 30;
+
+            rgbPolys = [];
+
+            for (let section = 0; section < 3; section++) {
+                let vertices = [{ x: cx, y: cy }];
+                let start = section * 2;
+
+                for (let i = 0; i <= 2; i++) {
+                    let angle = (start + i) * p.TWO_PI / 6 - p.PI / 6;
+
+                    vertices.push({
+                        x: cx + p.cos(angle) * r,
+                        y: cy + p.sin(angle) * r
+                    });
+                }
+
+                rgbPolys.push(vertices);
+            }
+            rgbPolys[0].color = [255, 0, 0, 20];
+            rgbPolys[1].color = [0, 255, 0, 20];
+            rgbPolys[2].color = [0, 0, 255, 20];
         }
 
         function isMouseLegal() {
 
-            return (
-                    !( (p.mouseX > window.innerWidth - 300 &&
-                        p.mouseX < window.innerWidth - 50 &&
-                        p.mouseY > window.innerHeight - 100 &&
-                        p.mouseY < window.innerHeight - 20) ||
-                        p.mouseY < 50
+            return !(
+                        p.mouseX >= 0 - (strokeThickness / 2) &&
+                        p.mouseX <= 190 + (strokeThickness / 2) &&
+                        p.mouseY >= 0 - (strokeThickness / 2) &&
+                        p.mouseY <= 80 + (strokeThickness / 2)
                     )
-            )
+            
         }
+
+        function isInsidePolygon(x, y, vertices) {
+            let inside = false;
+
+            for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+                const a = vertices[i];
+                const b = vertices[j];
+
+                if ((a.y > y) !== (b.y > y) &&
+                    x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) {
+                inside = !inside;
+                }
+            }
+
+            return inside;
+        }
+
+        // logic for increasing svalues of ui elements (thickness and rgb)
+        p.mouseDragged = () => {
+
+            if (uiColorSel.state) {
+
+                const startVal = uiColorSel.colorVal;
+                
+                strokeColor[uiColorSel.color] = startVal + p.map(p.mouseY - uiColorSel.mousePos, -50, 50, 255, -255, true);
+                strokeColor[uiColorSel.color] = p.max(0, strokeColor[uiColorSel.color]);
+                strokeColor[uiColorSel.color] = p.min(255, strokeColor[uiColorSel.color]);
+
+                rgbPolys[uiColorSel.color].color[3] = p.map(strokeColor[uiColorSel.color], 0, 255, 20, 255);
+                console.log(strokeColor[uiColorSel.color]);
+            }
+
+            if (uiStroke.state) {
+
+                const startVal = uiStroke.thicknessVal;
+
+                console.log(strokeThickness);
+
+                strokeThickness = startVal + p.map(p.mouseY - uiStroke.mousePos, -50, 50, 29, -29, true);
+                strokeThickness = p.max(1, strokeThickness);
+                strokeThickness = p.min(30, strokeThickness);
+            }
+
+            
+
+        }
+
 
         p.mousePressed = () => {
 
+            for (let i = 0; i < rgbPolys.length; i++) {
+                if (isInsidePolygon(p.mouseX, p.mouseY, rgbPolys[i])) {
+                    console.log("Clicked polygon:", i);
+
+                    uiColorSel.color = i;
+                    uiColorSel.mousePos = p.mouseY;
+                    uiColorSel.colorVal = strokeColor[i];
+                    uiColorSel.state = true;
+
+                    console.log(uiColorSel);
+                    console.log(strokeColor[uiColorSel.color]);
+                    
+                    return;
+                } else {
+                    uiColorSel.state = false;
+                }
+            } 
+
+            if (p.dist(p.mouseX, p.mouseY, uiStroke.pos.x, uiStroke.pos.y) < 30 / 2) {
+                uiStroke.state = true;
+                uiStroke.mousePos = p.mouseY;
+                uiStroke.thicknessVal = strokeThickness;
+
+            } else {
+                uiStroke.state = false;
+            }
+
+            if (p.mouseIsPressed &&
+                p.mouseX >= 130 &&
+                p.mouseX <= 170 &&
+                p.mouseY >= 20 &&
+                p.mouseY <= 60) {
+                    uiUndo.state = true;
+
+                    let lastStrokeId;
+
+                    socket.send(JSON.stringify({
+                        type: "delete",
+                        clientId
+                    }));
+                    
+                    console.log(strokesDict.clientId);
+                    console.log(lastStrokeId);
+
+            }
+
             if (isMouseLegal()) {
-                fzStrokes.push( new FzStroke(colorP.value(), thicknessS.value()));
+                fzStroke = new FzStroke(strokeColor, strokeThickness);
             }
         }
 
         p.mouseReleased = () => {
-            if (fzStrokes.length > 0) {
-                fzStrokes[fzStrokes.length - 1].saveStroke();
-                fzStrokes[fzStrokes.length - 1].setFinished();
+
+            uiColorSel.state = false;
+            uiStroke.state = false;
+            uiUndo.state = false;
+
+            if (fzStroke) {
+                fzStroke.saveStroke();
+                fzStroke.setFinished();
+                fzStroke = null;
             }
         };
 
@@ -98,10 +306,12 @@ export function createSketch() {
 
             constructor(color, thickness) {
 
+                this.strokeId = crypto.randomUUID();
                 this.color = color;
                 this.thickness = thickness;
                 this.pos = [];
                 this.isFinished = false;
+                this.lastSentIndex = 0;
             }
 
             setFinished() {
@@ -110,17 +320,27 @@ export function createSketch() {
 
             saveStroke() {
 
-                if (!this.isFinished) {
-                    strokesDict.push({
+                if (!this.isFinished && this.pos.length > this.lastSentIndex) {
+
+                    const targetPoints = this.pos
+                        .slice(this.lastSentIndex)
+                        .map(pos => ({
+                            x: pos.x,
+                            y: pos.y
+                        }));
+
+                    const data = {
+
+                        type: "add",
+                        strokeId: this.strokeId,
                         color: this.color,
                         thickness: this.thickness,
-                        pos: this.pos.map(p => {
-                            return {
-                                x: p.x,
-                                y: p.y
-                            }
-                        })
-                    })
+                        pos: targetPoints
+                    }
+
+                    socket.send(JSON.stringify(data));
+
+                    this.lastSentIndex = this.pos.length;
                 }
             }
 
@@ -130,11 +350,6 @@ export function createSketch() {
                 }
 
             }
-
-            getPos() {
-                return this.pos;
-            }
-            
 
             display() {
 
@@ -170,7 +385,8 @@ export function createSketch() {
     return {
         p5Sketch,
         getDrawings,
-        clearDrawings
+        clearDrawings,
+        socket
 
     };
 }
