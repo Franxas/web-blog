@@ -29,9 +29,11 @@ export default function EntriesPage() {
             <ul>
                 {entriesList.map(e => {
                     return (
-                            <Link key={e.id} to={`/entries/${e.id}`}>
-                                {e.date.split("T")[0] + " " + e.title}
-                            </Link>
+                            <li key={e.id}>
+                                <Link to={`/entries/${e.id}`}>
+                                    {e.date.split("T")[0] + " " + e.title}
+                                </Link>
+                            </li>
                     )
                 })}
             </ul>

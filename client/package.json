@@ -10,9 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@blocknote/core": "^0.55.0",
+    "@blocknote/mantine": "^0.55.0",
+    "@blocknote/react": "^0.55.0",
+    "@mantine/core": "^9.7.2",
+    "@mantine/hooks": "^9.7.2",
+    "@mantine/utils": "^6.0.22",
+    "dompurify": "^3.4.17",
+    "html-react-parser": "^6.1.8",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2"
+    "react-icons": "^5.7.0",
+    "react-router-dom": "^7.18.2",
+    "sanitize-html": "^2.18.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

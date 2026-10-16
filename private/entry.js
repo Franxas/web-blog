@@ -4,7 +4,7 @@ const entrySchema = new mongoose.Schema({
 
     title: String,
     date: Date,
-    blocks: []
+    textContent: String
 })
 
 module.exports = mongoose.model('Entry', entrySchema);

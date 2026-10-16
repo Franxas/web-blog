@@ -1,4 +1,4 @@
-import undoImg from '../../../assets/undo.png';
+import undoImg from './assets/undo.png';
 export function createSketch() {
 
     // ============================= websockets =============================
@@ -21,9 +21,6 @@ export function createSketch() {
         } else if (messageData.type === "drawing data") {
             strokesDict = messageData.data;
         }
-        console.log("data received");
-        console.log(messageData);
-        console.log(strokesDict);
     };
 
     socket.onclose = () => {
@@ -34,7 +31,7 @@ export function createSketch() {
         console.error('WEBSOCKET ERROR:', error);
     };
 
-    // ============================= websockets =============================
+    // ==========================================================
 
     const sketch = (p) => {
 
@@ -80,15 +77,7 @@ export function createSketch() {
                 fzStroke.display();
             }
 
-            if (isMouseLegal()) {
-                p.push();
-                    p.stroke(strokeColor);
-                    p.strokeWeight(strokeThickness);
-                    p.point(p.mouseX, p.mouseY);
-                p.pop()
-            }
-
-            // ================== change depending on whats next with data
+            // ================== poulate the canva with server data
             if (strokesDict.length > 0) {
 
                 strokesDict.forEach(s => {
@@ -106,7 +95,15 @@ export function createSketch() {
                     p.pop();
                 })
             }
-            // ================== change depending on whats next with data
+            // ==================
+
+            if (isMouseLegal()) {
+                p.push();
+                    p.stroke(strokeColor);
+                    p.strokeWeight(strokeThickness);
+                    p.point(p.mouseX, p.mouseY);
+                p.pop()
+            }
 
         };
 
@@ -120,10 +117,16 @@ export function createSketch() {
 
             // thickness ui element
             p.push();
-                p.noStroke();
-                p.fill(strokeColor)
-                p.circle(uiStroke.pos.x, uiStroke.pos.y, p.map(strokeThickness, 1, 30, 4, 38, true));
+                p.stroke(strokeColor)
+                p.strokeWeight(strokeThickness);
+                p.point(uiStroke.pos.x, uiStroke.pos.y);
+                p.noFill();
+                p.strokeWeight(1);
+                p.stroke(...strokeColor, 40);
+                p.circle(uiStroke.pos.x, uiStroke.pos.y, 40);
             p.pop();
+
+            
             p.image(undoImage, 130, 20, 40, 40);
 
             // undo ui element
@@ -217,18 +220,15 @@ export function createSketch() {
                 strokeColor[uiColorSel.color] = p.min(255, strokeColor[uiColorSel.color]);
 
                 rgbPolys[uiColorSel.color].color[3] = p.map(strokeColor[uiColorSel.color], 0, 255, 20, 255);
-                console.log(strokeColor[uiColorSel.color]);
             }
 
             if (uiStroke.state) {
 
                 const startVal = uiStroke.thicknessVal;
 
-                console.log(strokeThickness);
-
-                strokeThickness = startVal + p.map(p.mouseY - uiStroke.mousePos, -50, 50, 29, -29, true);
+                strokeThickness = startVal + p.map(p.mouseY - uiStroke.mousePos, -50, 50, 39, -39, true);
                 strokeThickness = p.max(1, strokeThickness);
-                strokeThickness = p.min(30, strokeThickness);
+                strokeThickness = p.min(40, strokeThickness);
             }
 
             
@@ -240,15 +240,11 @@ export function createSketch() {
 
             for (let i = 0; i < rgbPolys.length; i++) {
                 if (isInsidePolygon(p.mouseX, p.mouseY, rgbPolys[i])) {
-                    console.log("Clicked polygon:", i);
 
                     uiColorSel.color = i;
                     uiColorSel.mousePos = p.mouseY;
                     uiColorSel.colorVal = strokeColor[i];
                     uiColorSel.state = true;
-
-                    console.log(uiColorSel);
-                    console.log(strokeColor[uiColorSel.color]);
                     
                     return;
                 } else {
@@ -265,6 +261,7 @@ export function createSketch() {
                 uiStroke.state = false;
             }
 
+            // undo
             if (p.mouseIsPressed &&
                 p.mouseX >= 130 &&
                 p.mouseX <= 170 &&
@@ -272,15 +269,10 @@ export function createSketch() {
                 p.mouseY <= 60) {
                     uiUndo.state = true;
 
-                    let lastStrokeId;
-
                     socket.send(JSON.stringify({
                         type: "delete",
                         clientId
                     }));
-                    
-                    console.log(strokesDict.clientId);
-                    console.log(lastStrokeId);
 
             }
 

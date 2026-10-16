@@ -31,13 +31,13 @@ export default function Header(props) {
             >Projects</NavLink>
 
             <NavLink 
-                to="/synth" 
+                to="/weeklychallenges" 
                 style={({isActive}) => {
                     return{
                         color: isActive ? "#6b6375" : "black"
                     }
                 }}
-            >Synth</NavLink>
+            >Weekly challenges</NavLink>
            
             <p className="title" style={{ userSelect: "none" }}>franzaCom</p>
         </nav>

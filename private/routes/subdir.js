@@ -8,38 +8,82 @@ const upload = multer({ storage });
 const Entry = require('../entry');
 const mongoose = require('mongoose');
 
-router.post('/login', async (req, res) => {
-
-    const { email, password } = req.body;
-    console.log("testing login server");
-    console.log(email);
-    console.log(password);
-
-    const db = mongoose.connection;
-    const result = await db.collection("password").find({}).toArray();
-    console.log(result);
-    console.log(result[0].email);
-    console.log(result[0].password);
-
-    let flag = false;
-
-    if (result[0].email == email && result[0].password == password) {
-        flag = true;
-    } else {
-        flag = false;
+function requireAdmin(req, res, next) {
+    if (req.session?.isAdmin !== true) {
+        return res.status(401).json({
+            success: false,
+            message: "Authentication required"
+        });
     }
 
-    res.json({ "flag": flag });
+    next();
+}
+
+router.get("/auth/me", (req, res) => {
+    if (req.session?.isAdmin !== true) {
+        return res.status(401).json({
+            authenticated: false
+        });
+    }
+
+    res.json({
+        authenticated: true
+    });
 });
 
-router.post('/upload-image', upload.single('image'), async (request, response) => {
+// Log out and invalidate the session.
+router.post("/logout", (req, res, next) => {
+    req.session.destroy((err) => {
+        if (err) return next(err);
 
-    const data = await request.file;
+        res.clearCookie("admin.sid", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/"
+        });
+
+        res.sendStatus(204);
+    });
+});
+
+router.post('/login', async (req, res) => {
+
+    const { passwordInput } = req.body;
+    
+
+    if (passwordInput !== process.env.ADMIN_LOGIN_PASS) {
+        return res.json({
+            success: 0,
+            permission: false
+        })
+    }
+
+    req.session.regenerate((e) => {
+        if (e) {
+            return next(e);
+        }
+
+        req.session.isAdmin = true;
+        req.session.save((e) => {
+            if (e) {
+                return next(e);
+            }
+            res.json({
+                success: true,
+                permission: true
+            });
+        })
+    })
+});
+
+router.post('/upload-image', requireAdmin, upload.single('image'), async (request, response) => {
+
     if(!request.file) {
         return response.status(400).json(
             {
-            success: 0,
-            error: 'No file uploaded'
+                success: 0,
+                error: 'No file uploaded'
             }
         )
     }
@@ -55,7 +99,7 @@ router.post('/upload-image', upload.single('image'), async (request, response) =
 })
 
 // add entries to data base
-router.post('/save-entry', async (req, res) => {
+router.post('/save-entry', requireAdmin, async (req, res) => {
 
     const entryData = req.body;
     console.log('got a request to save Data');
@@ -67,7 +111,7 @@ router.post('/save-entry', async (req, res) => {
             entry = await Entry.create({
                 title: entryData.title,
                 date: Date.now(),
-                blocks: entryData.blocks
+                textContent: entryData.textContent
             });
         } else {
             //updating entrie and sending res to client
@@ -75,7 +119,7 @@ router.post('/save-entry', async (req, res) => {
         }
         res.json({
             "success": true,
-            "data": req.body,
+            "data": entry,
             "message": "post saved successfully"
         });
 
@@ -88,6 +132,34 @@ router.post('/save-entry', async (req, res) => {
         });
     }
     console.log(entry);
+})
+
+router.delete('/delete-entry', requireAdmin, async(req, res) => {
+    console.log("request to delete");
+    try {
+
+        const entry = await Entry.findByIdAndDelete(req.body.id);
+
+        if (!entry) {
+            return res.status(404).json({
+                success: false,
+                message: "Entry not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Entry deleted successfully"
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Entry could not be deleted"
+        });
+    }
 })
 
 router.get('/entries', async (req, res) => {

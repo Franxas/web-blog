@@ -147,7 +147,7 @@ export default function ProjectsPage() {
             <Project
                 title = {"Nariz Entupido at Damas"}
                 date = {"27/09/2026"}
-                link = {"https://soundcloud.com/franzscom/fcm_damas26092026"}
+                link = {"https://on.soundcloud.com/Ol7EzYYVonDJsCCKtw"}
             />
 
             <p style={{ fontStyle: "italic" }}>{"<Max MSP>"}</p>
