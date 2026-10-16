@@ -7,7 +7,10 @@ export function createSketch() {
     let clientId = null;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socket = new WebSocket(`${protocol}//${window.location.hostname}:3000`);
+    const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    const host = isLocal ? `${window.location.hostname}:3000` : window.location.host;
+    const socket = new WebSocket(`${protocol}//${host}`);
+
     socket.onopen = () => {
         console.log('CONNECTED');
     };
@@ -269,10 +272,12 @@ export function createSketch() {
                 p.mouseY <= 60) {
                     uiUndo.state = true;
 
-                    socket.send(JSON.stringify({
-                        type: "delete",
-                        clientId
-                    }));
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify({
+                            type: "delete",
+                            clientId
+                        }));
+                    }
 
             }
 
@@ -311,6 +316,10 @@ export function createSketch() {
             }
 
             saveStroke() {
+
+                if (socket.readyState !== WebSocket.OPEN) {
+                    return;
+                }
 
                 if (!this.isFinished && this.pos.length > this.lastSentIndex) {
 
