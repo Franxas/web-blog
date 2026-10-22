@@ -5,12 +5,15 @@ import EntryPreviewPage from "./components/pages/Entries/EntryPreviewPage.jsx"
 import ProjectsPage from "./components/pages/ProjectsPage.jsx"
 import WeeklyChallengesPage from "./components/pages/weekly challenges/WeeklyChallengesPage.jsx"
 
-import WSPainter from "./components/pages/weekly challenges/WSpainter/WSPainter.jsx"
-import Editor from "./components/pages/weekly challenges/Editor/Editor.jsx"
-
+//admin
 import LoginPage from "./components/pages/admin/LoginPage.jsx"
 import EntryEditor from "./components/pages/admin/EntryEditor.jsx"
 import EntryManager from "./components/pages/admin/EntryManager.jsx"
+
+//weekly challenges
+import WSPainter from "./components/pages/weekly challenges/WSpainter/WSPainter.jsx"
+import Editor from "./components/pages/weekly challenges/Editor/Editor.jsx"
+import GUIRoom from "./components/pages/weekly challenges/Simple Gui/GUIRoom.jsx"
 
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router";
@@ -29,8 +32,9 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/weeklychallenges" element={<WeeklyChallengesPage />} />
 
-            <Route path="wc-wspainter" element={<WSPainter />} />
-            <Route path="wc-editor" element={<Editor />} />
+            <Route path="wc/wspainter" element={<WSPainter />} />
+            <Route path="wc/editor" element={<Editor />} />
+            <Route path="wc/guiroom" element={<GUIRoom />} />
             
             <Route path="admin/login" element={<LoginPage />} />
             <Route path="admin/entryeditor" element={<EntryEditor />} />

@@ -10,13 +10,18 @@ export default function WeeklyChallengesPage() {
                 <ul>
                     <li>
                         <NavLink 
-                            to="/wc-wspainter"
-                        >WSPainter</NavLink>
+                            to="/wc/wspainter"
+                        >WS Painter</NavLink>
                     </li>
                     <li>
                         <NavLink 
-                            to="/wc-editor"
+                            to="/wc/editor"
                         >Text Editor</NavLink>
+                    </li>
+                    <li>
+                        <NavLink 
+                            to="/wc/guiroom"
+                        >Simple GUIs</NavLink>
                     </li>
                 </ul>
             </div>

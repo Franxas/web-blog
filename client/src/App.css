@@ -131,4 +131,16 @@ ul {
   width: 600px;
 }
 
+.wc-gui {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wc-gui-all {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 

@@ -1,9 +1,10 @@
 import undoImg from './assets/undo.png';
 export function createSketch() {
 
+    let strokesDict = [];
+
     // ============================= websockets =============================
 
-    let strokesDict = [];
     let clientId = null;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
