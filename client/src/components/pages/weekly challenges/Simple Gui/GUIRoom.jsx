@@ -51,8 +51,8 @@ export default function GUIRoom() {
                     <div className="wc-gui">
                         <BoxSlider
                             setValue={setBoxVal}
-                            minValue={200}
-                            maxValue={300}
+                            minValue={0}
+                            maxValue={100}
                             initialValue={60}
                         />
                         {displayBoxVal()}
