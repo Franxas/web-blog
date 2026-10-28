@@ -4,6 +4,6 @@
   },
   "include": [
     "*.js",
-    "**/*.js", "private/server.js",
+    "**/*.js", "private/server.js", "client/src/components/pages/weekly challenges/Simple Gui/ui/Boxslider.jsx",
   ]
 }

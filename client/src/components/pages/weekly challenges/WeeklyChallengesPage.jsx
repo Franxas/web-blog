@@ -23,6 +23,11 @@ export default function WeeklyChallengesPage() {
                             to="/wc/guiroom"
                         >Simple GUIs</NavLink>
                     </li>
+                    <li>
+                        <NavLink 
+                            to="/wc/magicoctagon"
+                        >Magic Octagon</NavLink>
+                    </li>
                 </ul>
             </div>
         </>

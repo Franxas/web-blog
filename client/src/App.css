@@ -143,4 +143,15 @@ ul {
   align-items: center;
 }
 
+.magic-oct {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.coin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 

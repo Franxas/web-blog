@@ -14,6 +14,7 @@ import EntryManager from "./components/pages/admin/EntryManager.jsx"
 import WSPainter from "./components/pages/weekly challenges/WSpainter/WSPainter.jsx"
 import Editor from "./components/pages/weekly challenges/Editor/Editor.jsx"
 import GUIRoom from "./components/pages/weekly challenges/Simple Gui/GUIRoom.jsx"
+import MagicOctDemo from "./components/pages/weekly challenges/Magic Octagon/Demo.jsx"
 
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router";
@@ -35,6 +36,8 @@ function App() {
             <Route path="wc/wspainter" element={<WSPainter />} />
             <Route path="wc/editor" element={<Editor />} />
             <Route path="wc/guiroom" element={<GUIRoom />} />
+            <Route path="wc/magicoctagon" element={<MagicOctDemo />} />
+
             
             <Route path="admin/login" element={<LoginPage />} />
             <Route path="admin/entryeditor" element={<EntryEditor />} />
