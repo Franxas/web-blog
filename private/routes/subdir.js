@@ -241,4 +241,72 @@ router.get('/entries/:id', async (req, res) => {
     }
 })
 
+router.get('/weather/locations', async (req, res) => {
+
+    try {
+        const response = await fetch("https://countriesnow.space/api/v0.1/countries/capital");
+        const data = await response.json();
+
+        data
+
+        console.log(data.data);
+        res.json({
+            "success": true,
+            "data":  data.data
+        })
+    } catch (error) {
+        res.json({
+            "success": false
+        })
+        console.log(error);
+    }
+})
+
+router.get('/weather/coordinates/:city', async (req, res) => {
+
+    const { city } = req.params;
+
+    try {
+
+        const response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${process.env.OPENWEATHER_API_KEY}`);
+        const data = await response.json();
+
+        res.json({
+            "success": true,
+            "data":  data,
+        })
+        console.log(data);
+    } catch (error) {
+
+        res.json({
+            "success": false,
+        })
+        console.log(error);
+    }
+})
+
+router.get('/weather/data/:lat/:lon', async (req, res) => {
+
+    const { lat, lon } = req.params;
+
+    try {
+
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.OPENWEATHER_API_KEY}`);
+        const data = await response.json();
+
+        res.json({
+            "success": true,
+            "data":  data,
+        })
+        console.log(data);
+    } catch (error) {
+
+        res.json({
+            "success": false,
+        })
+        console.log(error);
+    }
+})
+
+
 module.exports = router;

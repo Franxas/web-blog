@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 
-export default function WeeklyChallengesPage() {
+export default function Exercises() {
 
 
     return (
@@ -10,23 +10,28 @@ export default function WeeklyChallengesPage() {
                 <ul>
                     <li>
                         <NavLink 
-                            to="/wc/wspainter"
+                            to="/exercises/wspainter"
                         >WS Painter</NavLink>
                     </li>
                     <li>
                         <NavLink 
-                            to="/wc/editor"
+                            to="/exercises/editor"
                         >Text Editor</NavLink>
                     </li>
                     <li>
                         <NavLink 
-                            to="/wc/guiroom"
+                            to="/exercises/guiroom"
                         >Simple GUIs</NavLink>
                     </li>
                     <li>
                         <NavLink 
-                            to="/wc/magicoctagon"
+                            to="/exercises/magicoctagon"
                         >Magic Octagon</NavLink>
+                    </li>
+                    <li>
+                        <NavLink 
+                            to="/exercises/weather"
+                        >Weather</NavLink>
                     </li>
                 </ul>
             </div>

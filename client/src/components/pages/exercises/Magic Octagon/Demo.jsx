@@ -15,7 +15,7 @@ export default function MagicOctDemo() {
         return (
             <>
                 <p>
-                    The Magic Octagon is an illusion explained in the video linked below by one of my favourite YouTube channels, Vsauce. It consists of a coin-like object with two perpendicular arrows, one on each side. Michael explains how and why the direction of each arrow can be surprisingly difficult to keep track of. Apparently, it's very hard for our brains to follow multiple flips across more than one axis, and only about 8% of people can correctly predict the outcome. There's no trick to it, just the one our minds play on us. Do watch the video for a better explanation!
+                    The Magic Octagon is an illusion, that is explained in the video linked below by one of my favourite YouTube channels, Vsauce. It consists of a coin-like object with two perpendicular arrows, one on each side. Michael explains how and why the direction of each arrow can be surprisingly difficult to keep track of. Apparently, it's very hard for our brains to follow multiple flips across more than one axis, and only about 9% of people can correctly predict the outcome. There's no trick to it, just the one our minds play on us. Do watch the video for a better explanation!
                     I really like illusions and brain-melting experiences, so I thought I'd develop this simple interactive animation to help visualize the illusion and make it easier to understand.
                 </p>
             </>
@@ -37,7 +37,7 @@ export default function MagicOctDemo() {
                     }}
                 >About</a>
                 {isAboutOn && About()}
-                <a href="https://www.youtube.com/watch?v=1k1w1Q8vr5g&list=WL&index=30">Vsauce Magic Octagon youtube video</a>
+                <a href="https://www.youtube.com/watch?v=1k1w1Q8vr5g&list=WL&index=30">Vsauce youtube video</a>
                 <p>Use your keyboard's arrows to rotate the octagon on its X and Z axis</p>
                 <a
                     href=""
