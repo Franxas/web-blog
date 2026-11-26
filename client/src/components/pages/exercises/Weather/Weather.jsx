@@ -1,24 +1,83 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { Sketch } from "./p5/Sketch.jsx";
 
 export default function Weather() {
 
 
     const [ city, setCity ] = useState("");
-    const [ weatherData, setWeatherData ] = useState({});
+    const [ weatherData, setWeatherData ] = useState();
     const [ locations, setLocations ] = useState([]);
+    const elemRef = useRef(null);
 
     useEffect(() => {
 
         getLocation();
     }, []);
 
+    function displayData() {
+
+        return (
+            <div className="weather-params">  
+                <div className="weather-param-section">
+                    <p>current temperature: </p>
+                    <p> {weatherData.temp}</p>
+                </div>
+                <div className="weather-param-section">
+                    <p>cloudiness: </p>
+                    <p> {weatherData.clouds}</p>
+                </div>
+                <div className="weather-param-section">
+                    <p>wind speed: </p>
+                    <p> {weatherData.wind.speed}</p>
+                </div>
+                <div className="weather-param-section">
+                    <p>wind degrees: </p>
+                    <p> {weatherData.wind.deg}</p>
+                </div>
+                
+                <div className="weather-param-section">
+                    <p>rain: </p>
+                    <p> {weatherData.rain ? weatherData.rain: "---"}</p>
+                </div>
+                
+                
+                <div className="weather-param-section">
+                    <p>snow: </p>
+                    <p>
+                        {weatherData.snow ? weatherData.snow : "---"}
+                    </p>
+                </div>
+
+                <div className="weather-param-section">
+                    <p>current time: </p>
+                    <p> {weatherData.currtime.toISOString()}</p>
+                </div>
+                <div className="weather-param-section">
+                    <p>sunrise: </p>
+                    <p> {weatherData.sunrise.toISOString()}</p>
+                </div>
+                <div className="weather-param-section">
+                    <p>sunset: </p>
+                    <p> {weatherData.sunset.toISOString()}</p>
+                </div>
+                
+                
+            </div>
+        )
+
+    }
+
     async function getLocation() {
 
         let res = await fetch("/api/weather/locations");
         const data = await res.json();
         console.log("testing locations api");
-        console.log(data.data);
-        setLocations(data.data);
+
+        const orderedLoc = data.data.sort((a, b) =>
+            a.capital.localeCompare(b.capital)
+        );
+        
+        setLocations(orderedLoc);
     }
 
     async function getWeatherData(selCity) {
@@ -31,18 +90,48 @@ export default function Weather() {
             lat: coordinatesData.data[0].lat,
             lon: coordinatesData.data[0].lon
         }
-        console.log(lat);
-        console.log(lon);
 
-        // TODO -> Finish this get weather data logic
-        const weatherRes = await fetch(`/api/weather/data/${lat}/${lon}`)
-        const weatherJson = await weatherRes.json();
-        const weatherData = weatherJson.data;
+        
+        const resWeather = await fetch(`/api/weather/data/${lat}/${lon}`)
+        const resWeatherJson = await resWeather.json();
+        const resWeatherData = resWeatherJson.data;
         console.log("testing fetching weather data")
-        console.log(weatherData);
+        console.log(resWeatherData);
+        resWeatherData.main.temp -= 273.15;
+        resWeatherData.main.temp = Math.round(resWeatherData.main.temp)
 
+        
+
+        const filteredData = {
+            temp: resWeatherData.main.temp,
+            clouds: resWeatherData.clouds.all,
+            wind: {
+                speed: resWeatherData.wind.speed,
+                deg: resWeatherData.wind.deg
+            },
+            currtime: getLocalTime(resWeatherData.timezone),
+            sunrise: new Date(resWeatherData.sys.sunrise * 1000),
+            sunset: new Date(resWeatherData.sys.sunset * 1000)
+        }
+
+        filteredData.rain = resWeatherData.rain ? resWeatherData.rain["1h"] : null;
+        filteredData.snow = resWeatherData.snow ? resWeatherData.snow["1h"] : null;
+
+        console.log("filtered data: ")
+        console.log(filteredData);
+
+
+        setWeatherData(filteredData);
     }
 
+    function getLocalTime(timezone) {
+        const utc = Date.now();
+
+        const localTime = new Date(
+            utc + timezone * 1000
+        );
+        return localTime;
+    }
 
     return (
         <div className = "weather-page">
@@ -67,9 +156,8 @@ export default function Weather() {
                 }
             })}
             </select>
-
-            
-
+            {weatherData && displayData()}
+            <Sketch />
         </div>
     )
 }
